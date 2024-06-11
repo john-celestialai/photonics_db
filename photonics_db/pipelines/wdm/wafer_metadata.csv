@@ -1,0 +1,25 @@
+
+imec_id,sfab_id,wafer_id,wafer_vid,process_pull,gesi_epi,oxide_dep,status,notes
+P232739,IBB38132,R2P0E171PLE1,D02,Passive,None,None,Received,Allocated for component characterization in SC
+P232739,IBB38132,R2P0E194PLD6,D03,Advanced Passive,None,None,Received,Allocated for component characterization in SC (badly scratched during testing)
+P232739,IBB38132,R2P0E433PLG6,D04,Advanced Passive,None,None,Received,Component Characterization in SC
+P232739,IBB38132,R2P0E434PLD5,D05,Full Flow,HT+12,x2,Received,Component Characterization in SC
+P232739,IBB38132,R2P0E437PLB5,D06,Full Flow,HT+12,x2,Received,Component Characterization in SC
+P232739,IBB38132,R2P0E436PLE6,D07,Full Flow,HT+12,x3,Received,Allocated for component characterization in SCC
+P232739,IBB38132,R2P0E421PLB1,D08,Full Flow,HT+12,x3,Received [plated],Allocated for ZEUS-2 build (as backup)
+P232739,IBB38132,None,D09,Full Flow,HT+12,x3,None,Allocated for PL targeting at foundry
+P232739,IBB38132,R2P0E445PLF0,D10,Full Flow,HT+12,x4,Received,Allocated for component characterization in SC
+P232739,IBB38132,R2P0E444PLA6,D11,Full Flow,HT+12,x4,Received,Allocated for component characterization in SC
+P232739,IBB38132,R2P0E423PLC2,D12,Full Flow,RT,x2,Received,Allocated for component characterization in SC
+P232739,IBB38132,R2P0E424PLG4,D13,Full Flow,RT,x2,Received,Allocated for component characterization in SC
+P232739,IBB38132,R2P0E443PLD7,D14,Full Flow,RT,x3,Received [plated] [diced],Allocated for ZEUS-2 build (screened pre-plating)
+P232739,IBB38132,None,D15,Full Flow,RT,x3,None,Allocated for destructive FA at foundry
+P232739,IBB38132,None,D16,Full Flow,RT,x4,Received,Allocated for ZEUS-2 build (as backup)
+P232739,IBB38132,R2P0E427PLE4,D17,Full Flow,RT,x4,Received,Allocated for component characterization in SC
+P232739,IBB38132,R2P0E441PLC6,D18,Full Flow,RT,x4,Received,Allocated for component characterization in SC
+P232739,IBB38132,R2P0E438PLF7,D19,Full Flow,HT,x2,Received,Allocated for component characterization in SC
+P232739,IBB38132,None,D20,Full Flow,HT,x2,None,Lost during processing
+P232739,IBB38132,R2P0E380PLC5,D21,Full Flow,HT,x3,Received,Allocated for component characterization in SC
+P232739,IBB38132,R2P0E379PLG7,D22,Full Flow,HT,x3,Received,Allocated for component characterization in SC
+P232739,IBB38132,R2P0E386PLGO,D23,Full Flow,HT,x4,Received,Allocated for component characterization in SC
+P232739,IBB38132,R2P0E381PLG7,D24,Full Flow,HT,x4,Received [plated] [diced],Allocated for ZEUS-2 build (for setup)

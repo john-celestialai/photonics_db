@@ -1,0 +1,11 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "photonics_db"
+version = "0.0.1"
+authors = [
+  { name="John Rollinson", email="jrollinson@celestial.ai" },
+]
+requires-python = ">=3.8"

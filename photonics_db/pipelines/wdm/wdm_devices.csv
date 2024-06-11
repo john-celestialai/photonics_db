@@ -1,0 +1,48 @@
+device_id,orientation,bend_type,coupler_length_um,mh_linewidth_nm,ucut_config,doe_row,doe_column,ci_type,ci_separation_um
+WDM_RR_EULER_C1_H,H,Euler,0,None,None,2,2,None,None
+WDM_RR_EULER_C2_H,H,Euler,0.5,None,None,2,3,None,None
+WDM_RR_EULER_C3_H,H,Euler,1,None,None,2,4,None,None
+WDM_RR_EULER_CNOM_H,H,Euler,1.365,None,None,2,5,None,None
+WDM_RR_EULER_CNOM_MH300_H,H,Euler,1.365,300,None,2,12,None,None
+WDM_RR_EULER_CNOM_MH500_H,H,Euler,1.365,500,None,2,11,None,None
+WDM_RR_EULER_CNOM_MH600_H,H,Euler,1.365,600,None,2,6,None,None
+WDM_RR_EULER_CNOM_MH750_H,H,Euler,1.365,750,None,2,9,None,None
+WDM_RR_EULER_CNOM_MH900_H,H,Euler,1.365,900,None,2,10,None,None
+WDM_RR_EULER_C4_H,H,Euler,2,None,None,2,7,None,None
+WDM_RR_EULER_C5_H,H,Euler,3,None,None,2,8,None,None
+WDM_RR_EULER_C1_V,V,Euler,0,None,None,5,9,None,None
+WDM_RR_EULER_C2_V,V,Euler,0.5,None,None,5,10,None,None
+WDM_RR_EULER_C3_V,V,Euler,1,None,None,5,11,None,None
+WDM_RR_EULER_CNOM_V,V,Euler,1.365,None,None,5,12,None,None
+WDM_RR_EULER_C4_V,V,Euler,2,None,None,5,13,None,None
+WDM_RR_EULER_C5_V,V,Euler,3,None,None,5,14,None,None
+WDM_TRR_EULER_MH600_TC0_H,H,Euler,1.365,600,None,4,2,standard,1.45
+WDM_TRR_EULER_MH600_TCVA_H,H,Euler,1.365,600,Very Aggressive,4,1,standard,1.45
+WDM_TRR_EULER_MH600_TCA_H,H,Euler,1.365,600,Aggressive,4,3,standard,1.45
+WDM_TRR_EULER_MH600_TCI1_H,H,Euler,1.365,600,Intermediate v1,4,4,standard,1.45
+WDM_TRR_EULER_MH600_TCI2_H,H,Euler,1.365,600,Intermediate v2,4,5,standard,1.45
+WDM_TRR_EULER_MH600_TCC_H,H,Euler,1.365,600,Conservative,4,6,standard,1.45
+WDM_TRR_EULER_MH600_TC0_V,V,Euler,1.365,600,None,4,12,standard,1.45
+WDM_TRR_EULER_MH600_TCVA_V,V,Euler,1.365,600,Very Aggressive,4,14,standard,1.45
+WDM_TRR_EULER_MH600_TCA_V,V,Euler,1.365,600,Aggressive,3,12,standard,1.45
+WDM_TRR_EULER_MH600_TCI1_V,V,Euler,1.365,600,Intermediate v1,3,14,standard,1.45
+WDM_TRR_EULER_MH600_TCI2_V,V,Euler,1.365,600,Intermediate v2,3,13,standard,1.45
+WDM_TRR_EULER_MH600_TCC_V,V,Euler,1.365,600,Conservative,4,13,standard,1.45
+WDM_TRR_EULER_MH300_TCVA_H,H,Euler,1.365,300,Very Aggressive,4,11,standard,1.45
+WDM_TRR_EULER_MH500_TCVA_H,H,Euler,1.365,500,Very Aggressive,3,11,standard,1.45
+WDM_TRR_EULER_MH750_TCVA_H,H,Euler,1.365,750,Very Aggressive,3,10,standard,1.45
+WDM_TRR_EULER_MH900_TCVA_H,H,Euler,1.365,900,Very Aggressive,4,10,standard,1.45
+WDM_TRR_EULER_MH600_TCVA_CI1,H,Euler,1.365,600,Very Aggressive,4,0,custom,1.45
+WDM_TRR_EULER_MH600_TCVA_CI2,H,Euler,1.365,600,Very Aggressive,3,2,custom,5
+WDM_TRR_EULER_MH600_TCVA_CI3,H,Euler,1.365,600,Very Aggressive,3,3,custom,10
+WDM_TRR_EULER_MH600_TCVA_CI4,H,Euler,1.365,600,Very Aggressive,3,9,custom,16.252
+WDM_TRR_EULER_MH600_TCVA_CI5,H,Euler,1.365,600,Very Aggressive,4,9,custom,20.75
+WDM_TRR_EULER_MH600_TCA_CI1,H,Euler,1.365,600,Aggressive,3,4,custom,1.45
+WDM_TRR_EULER_MH600_TCA_CI2,H,Euler,1.365,600,Aggressive,3,5,custom,5
+WDM_TRR_EULER_MH600_TCA_CI3,H,Euler,1.365,600,Aggressive,3,6,custom,10
+WDM_TRR_EULER_MH600_TCI1_CI1,H,Euler,1.365,600,Intermediate v1,3,7,custom,1.45
+WDM_TRR_EULER_MH600_TCI1_CI2,H,Euler,1.365,600,Intermediate v1,3,8,custom,5
+WDM_TRR_EULER_MH600_TCI1_CI3,H,Euler,1.365,600,Intermediate v1,4,8,custom,10
+WDM_TRR_EULER_MH600_TCC_CI1,H,Euler,1.365,600,Conservative,4,7,custom,1.45
+WDM_TRR_EULER_MH600_TCC_CI2,H,Euler,1.365,600,Conservative,3,0,custom,5
+WDM_TRR_EULER_MH600_TCC_CI3,H,Euler,1.365,600,Conservative,3,1,custom,10
