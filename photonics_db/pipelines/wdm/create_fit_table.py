@@ -24,8 +24,10 @@ Data reduction procedure:
 """
 
 import math
+import sys
 import time
 
+import matplotlib.pyplot as plt
 import numpy as np
 import sqlalchemy as sa
 from scipy import optimize, signal
@@ -48,6 +50,8 @@ def lorentzian(x, x0, alpha, gamma):
 def extract_peaks(transmission_db: np.ndarray) -> np.ndarray:
     """Extract the peak indices of the ring resonator spectrum."""
     transmission_w = 10 ** (np.array(transmission_db) / 10)
+    # plt.plot(transmission_w)
+    # plt.show()
     peaks, _ = signal.find_peaks(transmission_w, prominence=0.5)
 
     return peaks
@@ -74,12 +78,13 @@ def extract_lorentzian_fit(
     Lorentzian:
         L(lambda) = alpha * gamma^2 / ((lambda - lambda_0)^2 + gamma^2)
     """
-    fsr_idx = np.roll(peaks, -1)[:-1] - peaks[:-1]
+    fsr_idx = np.mean(np.roll(peaks, -1)[:-1] - peaks[:-1])
     transmission_w = 10 ** (np.array(transmission_db) / 10)
+    wavelength_nm = np.array(wavelength_nm)
 
     # Slice out the peak of interest for fitting
-    start_idx = max(peak - fsr_idx // 2, 0)
-    stop_idx = min(peak + fsr_idx // 2, wavelength_nm.size)
+    start_idx = max(int(peak - fsr_idx // 2), 0)
+    stop_idx = min(int(peak + fsr_idx // 2), wavelength_nm.size)
     wlen_fit = wavelength_nm[start_idx:stop_idx]
     trans_fit = transmission_w[start_idx:stop_idx]
 
@@ -87,7 +92,7 @@ def extract_lorentzian_fit(
         lorentzian,
         wlen_fit,
         trans_fit,
-        p0=(wavelength_nm[peak], -1, 0.5, 1),
+        p0=(wavelength_nm[peak], 0.9, 0.35),
         sigma=1e-12,
     )
 
@@ -116,8 +121,8 @@ def extract_1db_bandwidth(fit_params) -> float:
 
     BW_1dB = sqrt(alpha*gamma^2/10^(-1/10) - gamma^2)
     """
-    _, alpha, gamma = fit_params
-    return np.sqrt(alpha * gamma**2 * 10 ** (1 / 10) - gamma**2)
+    _, _, gamma = fit_params
+    return gamma * np.sqrt(10 ** (1 / 10) - 1)
 
 
 def extract_crosstalk(fit_params) -> float:
@@ -164,18 +169,21 @@ def create_fit_table(session: Session):
 
         # Fetch a batch of WDM_RR measurements
         wdm_rr_results = session.scalars(
-            sa.select(WDMSweepMain).where().offset(offset).limit(batch_size)
+            sa.select(WDMSweepMain)
+            .where(WDMSweepMain.port_type == "drop")
+            .offset(offset)
+            .limit(batch_size)
         ).all()
         offset += batch_size
 
         for result in wdm_rr_results:
-            peaks = extract_peaks(result.wavelength_nm)
+            peaks = extract_peaks(result.transmission_db)
             peaks_fsr_nm = extract_fsr(result.wavelength_nm, peaks)
             for i, (peak, fsr_nm) in enumerate(zip(peaks, peaks_fsr_nm)):
                 popt, pcov, rsquared = extract_lorentzian_fit(
                     result.wavelength_nm, result.transmission_db, peak, peaks
                 )
-
+                fsr_nm = None if np.isnan(fsr_nm) else fsr_nm
                 peak_wavelength_nm = result.wavelength_nm[peak]
                 fwhm_nm = extract_fwhm(popt)
                 bw_1db_nm = extract_1db_bandwidth(popt)
@@ -196,6 +204,7 @@ def create_fit_table(session: Session):
                     fit_covars=pcov,
                     fit_rsquared=rsquared,
                 )
+                print(fit_data)
                 session.merge(fit_data)
 
         print("Committing transactions ...", end=" ", flush=True)

@@ -2,6 +2,7 @@ import math
 import sys
 import time
 
+import matplotlib.pyplot as plt
 import numpy as np
 import sqlalchemy as sa
 from sqlalchemy.orm import Session
@@ -67,6 +68,9 @@ def create_sweep_main_table(session: Session):
             ).one()
 
             # De-embed grating coupler from raw measurement
+            # plt.plot(raw_sweep.transmission_db)
+            # plt.plot(deembed_meas.transmission_db)
+            # plt.show()
             transmission_db = np.array(raw_sweep.transmission_db) - np.array(
                 deembed_meas.transmission_db
             )

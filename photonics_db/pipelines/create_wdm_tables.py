@@ -18,6 +18,7 @@ engine = create_engine(database_address + "/john_dev")
 Base.metadata.drop_all(engine, checkfirst=True)
 Base.metadata.create_all(engine, checkfirst=True)
 
+print("Connecting to engine")
 with Session(engine) as session:
 
     print("Uploading wafer data.")

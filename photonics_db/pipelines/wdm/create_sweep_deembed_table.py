@@ -27,7 +27,7 @@ def create_sweep_deembed_table(session: Session):
             filename,
             sep=",",
             skiprows=2,
-            names=["input", "output", "transmission_db", "wavelength_nm"],
+            names=["input", "output", "wavelength_nm", "transmission_db"],
         )
 
         measurement = {
