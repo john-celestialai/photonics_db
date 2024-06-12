@@ -204,7 +204,7 @@ def create_fit_table(session: Session):
                     fit_covars=pcov,
                     fit_rsquared=rsquared,
                 )
-                print(fit_data)
+
                 session.merge(fit_data)
 
         print("Committing transactions ...", end=" ", flush=True)
