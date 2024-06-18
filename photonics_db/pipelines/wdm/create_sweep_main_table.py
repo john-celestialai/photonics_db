@@ -5,6 +5,7 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 import sqlalchemy as sa
+from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import Session
 
 from photonics_db.tables.wdm import (
@@ -58,14 +59,24 @@ def create_sweep_main_table(session: Session):
                 sa.select(WDMDevices).where(WDMDevices.device_id == meas.device_id)
             ).one()
 
-            target_deembed_id = f"{meas.wafer_id}_{meas.die_id}_WDM_RR_GCDE_C{raw_sweep.input}_C{raw_sweep.output}_{device.doe_column}"
+            target_deembed_id = f"{meas.wafer_id}_{meas.die_id}_WDM_RR_GCDE_C{raw_sweep.input}_C{raw_sweep.output}"
 
-            # Fetch the corresponding de-embed measurement
-            deembed_meas = session.scalars(
-                sa.select(WDMSweepDeembed).where(
-                    WDMSweepDeembed.deembed_id == target_deembed_id
-                )
-            ).one()
+            try:
+                # Fetch the corresponding de-embed measurement
+                deembed_meas = session.scalars(
+                    sa.select(WDMSweepDeembed)
+                    .where(WDMSweepDeembed.deembed_id.contains(target_deembed_id))
+                    .where(WDMSweepDeembed.doe_column == (device.doe_column + 1))
+                ).one()
+            except NoResultFound:
+                # If we do not find an exact match, try to find a de-embed
+                # measurement from the same die
+                # print(target_deembed_id)
+                deembed_meas = session.scalars(
+                    sa.select(WDMSweepDeembed).where(
+                        WDMSweepDeembed.deembed_id.contains(target_deembed_id)
+                    )
+                ).one()
 
             # De-embed grating coupler from raw measurement
             # plt.plot(raw_sweep.transmission_db)
@@ -102,7 +113,6 @@ def create_sweep_main_table(session: Session):
                 wavelength_nm=raw_sweep.wavelength_nm,
                 transmission_db=transmission_db,
             )
-
             session.merge(new_entry)
 
         print("Committing transactions ...", end=" ", flush=True)

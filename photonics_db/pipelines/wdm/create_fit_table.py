@@ -96,6 +96,11 @@ def extract_lorentzian_fit(
         sigma=1e-12,
     )
 
+    # plt.plot(wlen_fit, trans_fit)
+    # plt.plot(wlen_fit, lorentzian(wlen_fit, *popt), label=f"{popt}")
+    # plt.legend()
+    # plt.show()
+
     # Compute r-square for Lorentzian fit
     residuals = trans_fit - lorentzian(wlen_fit, *popt)
     ss_res = np.sum(np.square(residuals))
@@ -122,7 +127,7 @@ def extract_1db_bandwidth(fit_params) -> float:
     BW_1dB = sqrt(alpha*gamma^2/10^(-1/10) - gamma^2)
     """
     _, _, gamma = fit_params
-    return gamma * np.sqrt(10 ** (1 / 10) - 1)
+    return np.sqrt(10 ** (1 / 10) - 1) * gamma
 
 
 def extract_crosstalk(fit_params) -> float:
@@ -130,8 +135,8 @@ def extract_crosstalk(fit_params) -> float:
 
     XT_2.5nm_dB = 10log(alpha*gamma^2/(2.5nm + gamma^2))
     """
-    _, alpha, gamma = fit_params
-    return 10 * np.log10(alpha * gamma**2 / (2.5 + gamma**2))
+    lambda_0, _, _ = fit_params
+    return 10 * np.log10(lorentzian(lambda_0 + 2.5, *fit_params))
 
 
 def extract_insertion_loss(fit_params) -> float:
@@ -139,8 +144,8 @@ def extract_insertion_loss(fit_params) -> float:
 
     IL_dB = -10log(alpha)
     """
-    _, alpha, _ = fit_params
-    return -10 * np.log10(alpha)
+    _, alpha, gamma = fit_params
+    return -10 * np.log10(alpha / gamma)
 
 
 def create_fit_table(session: Session):

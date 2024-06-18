@@ -2,7 +2,14 @@ import datetime
 from typing import List
 
 import numpy as np
-from sqlalchemy import ARRAY, Float, ForeignKey, ForeignKeyConstraint, Integer, String
+from sqlalchemy import (
+    ARRAY,
+    BigInteger,
+    Float,
+    ForeignKey,
+    ForeignKeyConstraint,
+    String,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from photonics_db.tables.base import Base
@@ -46,18 +53,26 @@ class WDMDevices(Base):
 class WDMMeasurements(Base):
     __tablename__ = "wdm_measurements"
 
-    measurement_id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    sweeps: Mapped[List["WDMSweepRaw"]] = relationship(back_populates="measurement")
+    measurement_id: Mapped[int] = mapped_column(
+        BigInteger, primary_key=True, init=False
+    )
+    sweeps: Mapped[List["WDMSweepRaw"]] = relationship(
+        back_populates="measurement", init=False
+    )
 
     wafer_id: Mapped[str] = mapped_column(ForeignKey("PEGASUS2.wafers.wafer_id"))
-    wafer: Mapped["WaferMetadata"] = relationship(back_populates="measurements")
+    wafer: Mapped["WaferMetadata"] = relationship(
+        back_populates="measurements", init=False
+    )
 
     die_id: Mapped[str]
 
     device_id: Mapped[str | None] = mapped_column(
         ForeignKey("PEGASUS2.wdm_devices.device_id"),
     )
-    device: Mapped["WDMDevices"] = relationship(back_populates="measurements")
+    device: Mapped["WDMDevices"] = relationship(
+        back_populates="measurements", init=False
+    )
 
     pdk_element: Mapped[str]
     test_sequence: Mapped[str]
@@ -70,21 +85,36 @@ class WDMMeasurements(Base):
     measurement_time: Mapped[datetime.time]
     fiber_height_um: Mapped[float | None]
 
+    def __post_init__(self) -> None:
+        self.measurement_id = self.generate_measurement_id()
+        super().__post_init__()
+
+    def generate_measurement_id(self):
+        mid = (
+            self.run_name.split("__")[-1].lstrip("R")
+            + self.measurement_date.strftime("%y%m%d")
+            + self.measurement_time.strftime("%H%M%S")
+        )
+        return int(mid)
+
 
 class WDMSweepRaw(Base):
     __tablename__ = "wdm_sweep_raw"
 
     measurement_id: Mapped[int] = mapped_column(
+        BigInteger,
         ForeignKey("PEGASUS2.wdm_measurements.measurement_id"),
         primary_key=True,
     )
-    measurement: Mapped["WDMMeasurements"] = relationship(back_populates="sweeps")
+    measurement: Mapped["WDMMeasurements"] = relationship(
+        back_populates="sweeps", init=False
+    )
 
     sweep_id: Mapped[int] = mapped_column(primary_key=True)
     input: Mapped[int]
     output: Mapped[int]
-    voltage_V: Mapped[float | None]
-    current_mA: Mapped[float | None]
+    voltage_v: Mapped[float | None]
+    current_ma: Mapped[float | None]
     wavelength_nm: Mapped[np.ndarray] = mapped_column(ARRAY(Float))
     transmission_db: Mapped[np.ndarray] = mapped_column(ARRAY(Float))
 
@@ -96,6 +126,9 @@ class WDMSweepDeembed(Base):
     #     ForeignKey("PEGASUS2.wdm_measurements.measurement_id")
     # )
     deembed_id: Mapped[str] = mapped_column(primary_key=True)
+    doe_column: Mapped[int]
+    temperature: Mapped[float]
+    fiber_height_um: Mapped[float]
     input: Mapped[int]
     output: Mapped[int]
     wavelength_nm: Mapped[np.ndarray] = mapped_column(ARRAY(Float))
@@ -105,7 +138,7 @@ class WDMSweepDeembed(Base):
 class WDMSweepMain(Base):
     __tablename__ = "wdm_sweep_main"
 
-    measurement_id: Mapped[int] = mapped_column(primary_key=True)
+    measurement_id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     sweep_id: Mapped[int] = mapped_column(primary_key=True)
     deembed_id: Mapped[str] = mapped_column(
         ForeignKey("PEGASUS2.wdm_sweep_deembed.deembed_id")
@@ -130,7 +163,7 @@ class WDMSweepMain(Base):
 class WDMFitData(Base):
     __tablename__ = "wdm_fit"
 
-    measurement_id: Mapped[int] = mapped_column(primary_key=True)
+    measurement_id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     sweep_id: Mapped[int] = mapped_column(primary_key=True)
     resonance_id: Mapped[int] = mapped_column(primary_key=True)
     peak_wavelength_nm: Mapped[float]
